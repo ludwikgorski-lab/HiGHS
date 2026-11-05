@@ -30,10 +30,11 @@ void HFactor::addRows(const HighsSparseMatrix* ar_matrix) {
   assert(kExtendInvertWhenAddingRows);
   HighsInt num_new_row = ar_matrix->num_row_;
   HighsInt new_num_row = num_row + num_new_row;
-  if (0) printf("Adding %" HIGHSINT_FORMAT
-         " new rows to HFactor instance: increasing dimension from "
-         "%" HIGHSINT_FORMAT " to %" HIGHSINT_FORMAT " \n",
-         num_new_row, num_row, new_num_row);
+  if (0)
+    printf("Adding %" HIGHSINT_FORMAT
+           " new rows to HFactor instance: increasing dimension from "
+           "%" HIGHSINT_FORMAT " to %" HIGHSINT_FORMAT " \n",
+           num_new_row, num_row, new_num_row);
 
   // Need to know where (if) a column is basic
   vector<HighsInt> in_basis;
@@ -189,8 +190,9 @@ void HFactor::addRows(const HighsSparseMatrix* ar_matrix) {
   // Need to refer to just the new UR vectors
   HighsInt ur_cur_num_vec = ur_start.size();
   HighsInt ur_new_num_vec = ur_cur_num_vec + num_new_row;
-  if (0) printf("\nUpdating UR vectors %d - %d\n", (int)ur_cur_num_vec,
-         (int)ur_new_num_vec - 1);
+  if (0)
+    printf("\nUpdating UR vectors %d - %d\n", (int)ur_cur_num_vec,
+           (int)ur_new_num_vec - 1);
   // UR pointer
   //
   // Allow space to the start of new rows, including the start for the
@@ -217,10 +219,12 @@ void HFactor::addRows(const HighsSparseMatrix* ar_matrix) {
     HighsInt gap = ur_temp[iRow - 1] + ur_stuff_size;
     ur_start[iRow] = iStart + gap;
     iStart += gap;
-    if (0) printf("ur_start[%d] = %d; gap = %d; iStart = %d\n", (int)iRow,
-           (int)ur_start[iRow], (int)gap, (int)iStart);
+    if (0)
+      printf("ur_start[%d] = %d; gap = %d; iStart = %d\n", (int)iRow,
+             (int)ur_start[iRow], (int)gap, (int)iStart);
   }
-  if (0) printf("ur_count_size = %d; iStart%d\n", (int)ur_count_size, (int)iStart);
+  if (0)
+    printf("ur_count_size = %d; iStart%d\n", (int)ur_count_size, (int)iStart);
   // Lose the start for the fictitious ur_new_num_vec'th row
   ur_start.resize(ur_new_num_vec);
   // Resize ur_lastp and initialise its new entries to be the ur_start
