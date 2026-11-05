@@ -2301,37 +2301,39 @@ void HEkk::initialisePartitionedRowwiseMatrix() {
     ar_matrix_.createRowwisePartitioned(lp_.a_matrix_,
                                         basis_.nonbasicFlag_.data());
     assert(ar_matrix_.legalDimensions(options_->log_options));
-    assert(ar_matrix_.trimDimensions(options_->log_options) == HighsStatus::kOk);
-    assert(ar_matrix_.assess(options_->log_options, options_->small_matrix_value,
-                             options_->large_matrix_value,
-                             false) == HighsStatus::kOk);
+    assert(ar_matrix_.trimDimensions(options_->log_options) ==
+           HighsStatus::kOk);
+    assert(ar_matrix_.assess(
+               options_->log_options, options_->small_matrix_value,
+               options_->large_matrix_value, false) == HighsStatus::kOk);
   } else {
     // Re-partition a cached full row-wise copy: same entry order as a
     // fresh build (ascending column within each partition)
     const HighsSparseMatrix& a = lp_.a_matrix_;
     const HighsInt nr = a.num_row_, nc = a.num_col_, nz = a.numNz();
-    bool same = rwc_nrow_ == nr && rwc_ncol_ == nc &&
-                (HighsInt)rwc_ci_.size() == nz &&
-                std::equal(a.start_.begin(), a.start_.begin() + nc + 1,
-                           rwc_cs_.begin()) &&
-                std::equal(a.index_.begin(), a.index_.begin() + nz,
-                           rwc_ci_.begin()) &&
-                std::equal(a.value_.begin(), a.value_.begin() + nz,
-                           rwc_cv_.begin());
+    bool same =
+        rwc_nrow_ == nr && rwc_ncol_ == nc && (HighsInt)rwc_ci_.size() == nz &&
+        std::equal(a.start_.begin(), a.start_.begin() + nc + 1,
+                   rwc_cs_.begin()) &&
+        std::equal(a.index_.begin(), a.index_.begin() + nz, rwc_ci_.begin()) &&
+        std::equal(a.value_.begin(), a.value_.begin() + nz, rwc_cv_.begin());
     if (!same) {
-      rwc_nrow_ = nr; rwc_ncol_ = nc;
+      rwc_nrow_ = nr;
+      rwc_ncol_ = nc;
       rwc_cs_.assign(a.start_.begin(), a.start_.begin() + nc + 1);
       rwc_ci_.assign(a.index_.begin(), a.index_.begin() + nz);
       rwc_cv_.assign(a.value_.begin(), a.value_.begin() + nz);
       rwc_rs_.assign(nr + 1, 0);
       for (HighsInt k = 0; k < nz; k++) rwc_rs_[rwc_ci_[k] + 1]++;
       for (HighsInt r = 0; r < nr; r++) rwc_rs_[r + 1] += rwc_rs_[r];
-      rwc_ri_.resize(nz); rwc_rv_.resize(nz);
+      rwc_ri_.resize(nz);
+      rwc_rv_.resize(nz);
       std::vector<HighsInt> pos(rwc_rs_.begin(), rwc_rs_.end() - 1);
       for (HighsInt c = 0; c < nc; c++)
         for (HighsInt k = rwc_cs_[c]; k < rwc_cs_[c + 1]; k++) {
           HighsInt q = pos[rwc_ci_[k]]++;
-          rwc_ri_[q] = c; rwc_rv_[q] = rwc_cv_[k];
+          rwc_ri_[q] = c;
+          rwc_rv_[q] = rwc_cv_[k];
         }
     }
     const int8_t* f = basis_.nonbasicFlag_.data();
@@ -2349,8 +2351,13 @@ void HEkk::initialisePartitionedRowwiseMatrix() {
       ar_matrix_.p_end_[r] = q;
       for (HighsInt k = s0; k < e0; k++) {
         const HighsInt c = rwc_ri_[k];
-        if (f[c]) { oi[p] = c; ov[p++] = rwc_rv_[k]; }
-        else { oi[q] = c; ov[q++] = rwc_rv_[k]; }
+        if (f[c]) {
+          oi[p] = c;
+          ov[p++] = rwc_rv_[k];
+        } else {
+          oi[q] = c;
+          ov[q++] = rwc_rv_[k];
+        }
       }
     }
     ar_matrix_.format_ = MatrixFormat::kRowwisePartitioned;
