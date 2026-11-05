@@ -49,6 +49,7 @@ if ((NOT FAST_BUILD OR ALL_TESTS) AND NOT (BUILD_EXTRA_UNIT_ONLY))
       TestHighsRbTree.cpp
       TestHighsSparseMatrix.cpp
       TestHighsVersion.cpp
+      TestHiPdlp.cpp
       TestHSet.cpp
       TestICrash.cpp
       TestIis.cpp
@@ -57,7 +58,7 @@ if ((NOT FAST_BUILD OR ALL_TESTS) AND NOT (BUILD_EXTRA_UNIT_ONLY))
       TestIpm.cpp
       TestIpx.cpp
       TestLogging.cpp
-      TestLPFileFormat.cpp
+      TestLpFileFormat.cpp
       TestLpModification.cpp
       TestLpOrientation.cpp
       TestLpSolvers.cpp
@@ -69,9 +70,9 @@ if ((NOT FAST_BUILD OR ALL_TESTS) AND NOT (BUILD_EXTRA_UNIT_ONLY))
       TestNames.cpp
       TestOptions.cpp
       TestPdlp.cpp
-      TestPdlpHi.cpp
       TestPresolve.cpp
       TestPresolveRules.cpp
+      TestQpOracle.cpp
       TestQpSolver.cpp
       TestRanging.cpp
       TestRays.cpp
@@ -80,6 +81,7 @@ if ((NOT FAST_BUILD OR ALL_TESTS) AND NOT (BUILD_EXTRA_UNIT_ONLY))
       TestSetup.cpp
       TestSort.cpp
       TestSpecialLps.cpp
+      TestSymmetry.cpp
       TestThrow.cpp
       TestTspSolver.cpp
       TestUserScale.cpp
